@@ -13,6 +13,8 @@ const {
     shell,
     dialog,
     powerMonitor,
+    screen,
+    session
 } = require('electron')
 const path = require('path')
 const isDev = require('electron-is-dev')
@@ -44,6 +46,12 @@ const mprisProvider = (() => {
         return null
     }
 })()
+
+const { ElectronBlocker } = require("@cliqz/adblocker-electron");
+const fetch = require("cross-fetch");
+ElectronBlocker.fromPrebuiltAdsAndTracking(fetch).then(blocker => {
+  blocker.enableBlockingInSession(session.defaultSession);
+});
 
 const { commit_hash } = require('./commit_hash')
 
